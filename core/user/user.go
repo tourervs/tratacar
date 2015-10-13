@@ -7,3 +7,27 @@ type User struct {
     Routes []Route
 
 }
+
+type Driver struct {
+
+    Name     string
+    Surname  string
+    Age      string
+    Mob      string
+    Email    string
+    Skype    string
+    Car
+
+}
+
+type Car struct {
+
+    Brand    string
+    Model    string
+    Capacity int
+    Photo    int
+
+
+
+
+}
