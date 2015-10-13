@@ -17,6 +17,7 @@ type Driver struct {
     Email    string
     Skype    string
     Car
+    Prop
 
 }
 
@@ -27,7 +28,12 @@ type Car struct {
     Capacity int
     Photo    int
 
+}
 
+type Prop struct {
 
+     Smoke              bool
+     FuckedSpeedLimits  bool
+     LoudMusic          bool
 
 }
