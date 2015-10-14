@@ -4,8 +4,14 @@ import "core/web"
 import "apps/base"
 import "apps/login"
 
-type Applications struct {
+type Dashboard struct {
 
+
+
+
+}
+
+func (dashboard *Dashboard ) AddNew () {
 
 
 
