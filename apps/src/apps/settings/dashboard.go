@@ -11,7 +11,7 @@ type Dashboard struct {
 
 }
 
-func (dashboard *Dashboard ) AddNew () {
+func (dashboard *Dashboard ) Add () {
 
 
 
