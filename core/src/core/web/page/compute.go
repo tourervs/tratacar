@@ -1,8 +1,11 @@
 package page
 
+import "core/web"
+
 type Page struct {
 
-    
+    web.Object
+    StaticFiles []string
 
 }
 

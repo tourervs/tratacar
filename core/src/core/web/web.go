@@ -1,33 +1,35 @@
 package web
 
-type Element struct {
+type Object struct {
 
     Slug               string
-    VerboseName        string
+    Name               string
     Id                 string
     Value              string
-    Content            string
+    Content            string // All element content
     //
-    SelfOpenTag        string
-    SelfCloseTag       string
+    //SelfOpenTag        string
+    //SelfCloseTag       string
+    SingleTag          bool
     //
     //SelfDelimTagOpen   string
     //SelfDelimTagClose  string
     //
     Parent             *Element
     //
-    TemplateTag        string
+    templateTag        string
     //
     Classes            []string
+    Style              string
 
 }
 
-func (e *Element ) Print () {
+func (o *Object ) Print () {
 
 
 }
 
-func (e *Element ) Compile () {
+func (e *Object ) Compile () {
 
 
 }
