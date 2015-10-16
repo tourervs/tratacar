@@ -1,16 +1,33 @@
 package widget
 
+import "core/web"
+
 type Widget struct {
 
-    Slug        string
-    VerboseName string
-    Content string
+    web.Element
+
+}
+
+type Table  struct {
+
+    web.Element
+    SelfOpenTag        string  `<table><tbody>`
+    SelfCloseTag       string  `</tbody></table>`
+    SelfDelimTagOpen   string  `<tr>`
+    SelfDelimTagClose  string  `</tr>`
+
+
 
 
 
 }
 
-func ( w *Widget ) SomeFunc() {
+
+func NewWidget ()  (w Widget) {
+
+    w.Id = "Hello"
 
 
+    return
 }
+
