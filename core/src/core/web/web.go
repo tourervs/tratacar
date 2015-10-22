@@ -37,6 +37,7 @@ func (o *Object ) Compile ()  ( func()) {
         o.ChildsCompilationFunctions[chi_num]()
 
     }
+    
 
     return func() {
 
