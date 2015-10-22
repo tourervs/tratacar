@@ -20,7 +20,8 @@ func baseHTML ()(string)  {
     objHead.Parent     =   objHtml
     objBody.Parent     =   objHtml
 
-    //objHead.Parent.ChildsComp = append( objHead.Parent.ChildsComp, objHead.Compile())
+    _                  =   web.Append ( objHead, objHead )
+    _                  =   web.Append ( objHead, objBody )
 
     objBody.Value = "<h1>Hello</h1>"
 
