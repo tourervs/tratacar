@@ -2,26 +2,26 @@ package web
 
 type Object struct {
 
-    Slug                  string
-    Name                  string
-    Id                    string
-    Value                 string
-    Content               string // All element content
+    Slug                                 string
+    Name                                 string
+    Id                                   string
+    Value                                string
+    Content                              string // All element content
     //
     //SelfOpenTag        string
     //SelfCloseTag       string
-    SingleTag             bool
+    SingleTag                            bool
     //
     //SelfDelimTagOpen    string
     //SelfDelimTagClose   string
     //
-    Parent                *Object
+    Parent                                *Object
     //
-    templateTag           string
+    templateTag                           string
     //
-    Classes               []string
-    Style                 string
-    ChildsComp            []func()
+    Classes                               []string
+    Style                                 string
+    ChildsCompilationFunctions            []func()
 
 }
 
@@ -32,9 +32,9 @@ func (o *Object ) Print () {
 
 func (o *Object ) Compile ()  ( func()) {
 
-    for chi_num := range o.ChildsComp {
+    for chi_num := range o.ChildsCompilationFunctions {
 
-        o.ChildsComp[chi_num]()
+        o.ChildsCompilationFunctions[chi_num]()
 
     }
 
