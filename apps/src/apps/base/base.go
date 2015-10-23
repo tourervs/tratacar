@@ -7,27 +7,24 @@ import "fmt"
 //
 import "core/web"
 
+
+
+
+
 func baseHTML ()(string)  {
 
-    objHtml            :=  &web.Object{}
-    objHead            :=  &web.Object{}
-    objBody            :=  &web.Object{}
+    html            :=  &web.Object{ Name : "html" }
+    head            :=  &web.Object{ Name : "head" }
+    body            :=  &web.Object{ Name : "body" }
+    h1              :=  &web.Object{ Name : "h1", Value : "Hello world!"  }
 
-    objHtml.Name       =   "html"
-    objHead.Name       =   "head"
-    objBody.Name       =   "body"
+    web.Append ( html, head )
+    web.Append ( html, body )
+    web.Append ( body, h1   )
 
-    objHead.Parent     =   objHtml
-    objBody.Parent     =   objHtml
+    html.Compile()()
 
-    _                  =   web.Append ( objHead, objHead )
-    _                  =   web.Append ( objHead, objBody )
-
-    objBody.Value = "<h1>Hello</h1>"
-
-    objHtml.Compile()()
-    if objHtml.Parent == nil { fmt.Printf("HTML parent is nil")}
-    return objHtml.Content
+    return html.Content
 
 }
 

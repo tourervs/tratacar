@@ -1,6 +1,6 @@
 package web
 
-import "fmt"
+import "fmt" // just for debug
 
 type Object struct {
 
@@ -39,28 +39,33 @@ func (o *Object ) Compile ()  ( func ()(string) ) {
     for chi_num := range o.ChildsCompilationFunctions {
 
         content        :=  o.ChildsCompilationFunctions[chi_num]()
-        child_content  =   child_content+content
+        child_content  =   child_content+content+"\n"
+        fmt.Printf("childs content len %s",child_content)
 
     }
-    fmt.Printf("\nchild_content |%s|\n",child_content)
+    //fmt.Printf("\nchild_content |%s|\n",child_content)
 
     return func() string {
 
 
-        fmt.Printf("\n returned function is started %s\n",o.Name)
+        //fmt.Printf("\n returned function is started %s\n",o.Name)
         if o.SingleTag {
             o.Content = "<"+o.Name+"/>"
         } else {
-            o.Content = "<"+o.Name+">"+ o.Value + child_content + "</"+o.Name+">"
+
+            var new_line string
+            if child_content != "" { new_line="\n" }
+
+            o.Content = "<"+o.Name+">" + new_line + o.Value + child_content + new_line +"</"+o.Name+">"
         }
         return o.Content
     }
 }
 
-func Append ( parent *Object,child *Object ) (err error) {
+func Append ( parent *Object,child *Object ) () {
 
     parent.ChildsCompilationFunctions =   append( parent.ChildsCompilationFunctions, child.Compile() )
-    return nil
+    //fmt.Printf("Child fun len %d",len(parent.ChildsCompilationFunctions))
 
 }
 
