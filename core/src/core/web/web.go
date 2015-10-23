@@ -2,6 +2,8 @@ package web
 
 // import "fmt" // just for debug
 
+type HtmlReturner func() string
+
 type Object struct {
 
     Slug                                 string

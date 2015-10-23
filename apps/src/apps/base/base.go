@@ -8,9 +8,24 @@ import "fmt"
 import "core/web"
 
 
+func TestTableExample()( *web.Object ) {
 
+    table  :=  &web.Object{ Name : "table" }
+    tbody  :=  &web.Object{ Name : "tbody" }
+    tr     :=  &web.Object{ Name : "tr" }
+    td1    :=  &web.Object{ Name : "td" , Value:"Hello world !" }
+    td2    :=  &web.Object{ Name : "td" , Value:"Hello Russia !" }
 
-func baseHTML ()( func() string )  {
+    web.Append(table,tbody)
+    web.Append(tbody,tr)
+    web.Append(tr,td1)
+    web.Append(tr,td2)
+
+    return table
+
+}
+
+func BaseHtml ()( *web.Object )  {
 
     html            :=  &web.Object{ Name : "html" }
     head            :=  &web.Object{ Name : "head" }
@@ -22,15 +37,19 @@ func baseHTML ()( func() string )  {
     web.Append ( html, body )
     web.Append ( body, h1   )
     web.Append ( body, h2   )
+    web.Append ( body, TestTableExample() )
 
-    return html.Compile()
+    return html
 
 }
 
 
 func main() {
 
-    fmt.Printf("\n====\n")
-    fmt.Printf("%s",baseHTML()())
+    html_code := baseHTML()
+
+    html_code.Compile()()
+
+    fmt.Printf( "%s",html_code.Content )
 
 }
