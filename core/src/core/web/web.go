@@ -14,12 +14,13 @@ type Object struct {
     //
     //SelfOpenTag        string
     //SelfCloseTag       string
-    SingleTag                            bool
+    DoubleTag                            bool
     //
     //SelfDelimTagOpen    string
     //SelfDelimTagClose   string
     //
     Parent                                *Object
+    Params                                []string
     //
     templateTag                           string
     //
@@ -37,15 +38,20 @@ func (o *Object ) Print () {
 func (o *Object ) Compile ()  ( func ()(string) ) {
 
     var child_content string
-
     //fmt.Printf("\nRunning compile : %s Childs_count :%d \n", o.Name, len(o.ChildsCompilationFunctions))
 
     for chi_num := range o.ChildsCompilationFunctions {
-
+        // Collect childs html code
         content        :=  o.ChildsCompilationFunctions[chi_num]()
         child_content  =   child_content+content()+"\n"
         //fmt.Printf("childs content len %s",child_content)
 
+    }
+
+    var params        string
+    for prm_id := range o.Params {
+        // Append params to html code
+        params+=o.Params[prm_id]+" "
     }
     //fmt.Printf("\nchild_content |%s|\n",child_content)
 
@@ -53,14 +59,14 @@ func (o *Object ) Compile ()  ( func ()(string) ) {
 
 
         //fmt.Printf("\n returned function is started %s\n",o.Name)
-        if o.SingleTag {
+        if o.DoubleTag {
             o.Content = "<"+o.Name+"/>"
         } else {
 
             var new_line string
             if child_content != "" { new_line="\n" }
 
-            o.Content = "<"+o.Name+">" + new_line + o.Value + child_content + new_line +"</"+o.Name+">"
+            o.Content = "<"+o.Name+" "+params+" >" + new_line + o.Value + child_content + new_line +"</"+o.Name+">"
         }
         return o.Content
     }

@@ -1,0 +1,39 @@
+<html>
+<head>
+
+
+    <!-- Head of my first angular app  : ) -->
+    <script src="/angular.min.js"></script>
+
+</head>
+<body ng-app="testapp">
+    <h1>Hello world!</h1>
+    <div ng-controller="HelloController">
+        <p>Hello !<br/>{{ helloTo.title }}<br/>fvdfvf fvdfvf</p>
+    </div>
+    <script>
+        angular.module("testapp",[])
+        .controller("HelloController", function($scope) {
+
+            $scope.helloTo       =  {};
+
+            $scope.helloTo.title =  "AngularJS" ;
+
+
+
+        } );
+
+    </script>
+    <table>
+        <tbody>
+            <tr>
+                <td>Hello world !</td>
+                <td>Hello Russia !</td>
+
+            </tr>
+
+        </tbody>
+    </table>
+</body>
+
+</html>

@@ -46,7 +46,7 @@ func BaseHtml ()( *web.Object )  {
 
 func main() {
 
-    html_code := baseHTML()
+    html_code := BaseHtml()
 
     html_code.Compile()()
 
