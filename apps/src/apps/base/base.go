@@ -6,6 +6,7 @@ import "fmt"
 
 //
 import "core/web"
+import "core/osutils"
 
 const APP_NAME = "base"
 
@@ -56,6 +57,8 @@ func main() {
     html_code := BaseHtml()
 
     html_code.Compile()()
+
+    osutils.StaticFilesFinder()
 
     fmt.Printf( "%s",html_code.Content )
 
