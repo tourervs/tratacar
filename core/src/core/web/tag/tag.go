@@ -1,16 +1,31 @@
 package tag
 
-// double tag object is true
-// single tag object is false
-//
+var single  =  []string{ "area",
+                         "base",
+                         "br",
+                         "col",
+                         "embed",
+                         "hr",
+                         "img",
+                         "input",
+                         "keygen",
+                         "link",
+                         "meta",
+                         "param",
+                         "source",
+                         "track",
+                         "wbr" }
 
+func IsDouble ( tag string ) ( double bool ) {
 
-const ( double = {"a","b"}
-        html = true
-        head = true
-        script = true )
+    double = true
 
-/*double := { "h",
-            "html",
-            "head",
-            "body" }
+    for i:= range single {
+
+        if tag == single[i] { double = false ; break }
+
+    }
+
+    return
+
+}

@@ -2,6 +2,8 @@ package web
 
 // import "fmt" // just for debug
 
+import "core/web/tag"
+
 type HtmlReturner func() string
 
 type Object struct {
@@ -59,14 +61,24 @@ func (o *Object ) Compile ()  ( func ()(string) ) {
 
 
         //fmt.Printf("\n returned function is started %s\n",o.Name)
-        if o.DoubleTag {
-            o.Content = "<"+o.Name+"/>"
+
+        if tag.IsDouble(o.Name) == false  {
+
+            var value string
+
+            if o.Value != "" { value="value="+o.Value } else { value="" }
+
+            o.Content = "<" + o.Name + " " + params + " " + value + " />"
+
         } else {
 
             var new_line string
-            if child_content != "" { new_line="\n" }
+            var space    string
 
-            o.Content = "<"+o.Name+" "+params+" >" + new_line + o.Value + child_content + new_line +"</"+o.Name+">"
+            if child_content != "" { new_line="\n" }
+            if params        != "" { space=" " }
+
+            o.Content = "<" + o.Name + space + params + space +">" + new_line + o.Value + child_content + new_line + "</" + o.Name + ">"
         }
         return o.Content
     }

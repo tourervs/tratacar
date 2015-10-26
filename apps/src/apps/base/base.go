@@ -31,12 +31,14 @@ func BaseHtml ()( *web.Object )  {
     head            :=  &web.Object{ Name : "head" }
     body            :=  &web.Object{ Name : "body" }
     h1              :=  &web.Object{ Name : "h1", Value : "Hello world!"  }
-    h2              :=  &web.Object{ Name : "p", Value : "Hello !<br/>fvdfv<br/>fvdfvf fvdfvf"  }
+    p               :=  &web.Object{ Name : "p" }
+    input           :=  &web.Object{ Name : "input" , Value : "ok" }
 
-    web.Append ( html, head )
-    web.Append ( html, body )
-    web.Append ( body, h1   )
-    web.Append ( body, h2   )
+    web.Append ( html, head  )
+    web.Append ( html, body  )
+    web.Append ( body, h1    )
+    web.Append ( body, p     )
+    web.Append ( p, input    )
     web.Append ( body, TestTableExample() )
 
     return html
