@@ -7,6 +7,8 @@ import "fmt"
 //
 import "core/web"
 
+const APP_NAME = "base"
+
 
 func TestTableExample()( *web.Object ) {
 
@@ -29,16 +31,19 @@ func BaseHtml ()( *web.Object )  {
 
     html            :=  &web.Object{ Name : "html" }
     head            :=  &web.Object{ Name : "head" }
+    static_angular  :=  &web.Object{ Name : "script", Params : []string{`src="/angular.min.js"`} }
     body            :=  &web.Object{ Name : "body" }
     h1              :=  &web.Object{ Name : "h1", Value : "Hello world!"  }
     p               :=  &web.Object{ Name : "p" }
     input           :=  &web.Object{ Name : "input" , Value : "ok" }
 
-    web.Append ( html, head  )
-    web.Append ( html, body  )
-    web.Append ( body, h1    )
-    web.Append ( body, p     )
-    web.Append ( p, input    )
+
+    web.Append ( head, static_angular )
+    web.Append ( html, head           )
+    web.Append ( html, body           )
+    web.Append ( body, h1             )
+    web.Append ( body, p              )
+    web.Append ( p, input             )
     web.Append ( body, TestTableExample() )
 
     return html
