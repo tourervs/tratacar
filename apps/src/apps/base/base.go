@@ -6,7 +6,7 @@ import "fmt"
 
 //
 import "core/web"
-import "core/osutils"
+//import "core/osutils"
 
 const APP_NAME = "base"
 
@@ -39,12 +39,12 @@ func BaseHtml ()( *web.Object )  {
     input           :=  &web.Object{ Name : "input" , Value : "ok" }
 
 
-    web.Append ( head, static_angular )
-    web.Append ( html, head           )
-    web.Append ( html, body           )
-    web.Append ( body, h1             )
-    web.Append ( body, p              )
-    web.Append ( p, input             )
+    web.Append ( head, static_angular     )
+    web.Append ( html, head               )
+    web.Append ( html, body               )
+    web.Append ( body, h1                 )
+    web.Append ( body, p                  )
+    web.Append ( p, input                 )
     web.Append ( body, TestTableExample() )
 
     return html
@@ -58,7 +58,7 @@ func main() {
 
     html_code.Compile()()
 
-    osutils.StaticFilesFinder()
+    //osutils.StaticFilesFinder()
 
     fmt.Printf( "%s",html_code.Content )
 
