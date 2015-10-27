@@ -1,6 +1,6 @@
 package web
 
-// import "fmt" // just for debug
+//import "fmt" // just for debug
 
 import "core/web/tag"
 
@@ -28,7 +28,7 @@ type Object struct {
     //
     Classes                               []string
     Style                                 string
-    ChildsCompilationFunctions            []func()( func () *Object )
+    Childs                                []*Object
 
 }
 
@@ -42,9 +42,9 @@ func (o *Object ) Compile ()  ( func ()(*Object) ) { // need to add returning  s
     var child_content string
     //fmt.Printf("\nRunning compile : %s Childs_count :%d \n", o.Name, len(o.ChildsCompilationFunctions))
 
-    for chi_num := range o.ChildsCompilationFunctions {
+    for i:= range o.Childs {
         // Collect childs html code
-        obj_compile        :=  o.ChildsCompilationFunctions[chi_num]()
+        obj_compile        :=  o.Childs[i].Compile()
         child_content      =   child_content+obj_compile().Content+"\n"
         //fmt.Printf("childs content len %s",child_content)
 
@@ -86,28 +86,58 @@ func (o *Object ) Compile ()  ( func ()(*Object) ) { // need to add returning  s
 
 func Append ( parent *Object, child *Object ) () {
 
-    parent.ChildsCompilationFunctions =   append( parent.ChildsCompilationFunctions, child.Compile )
+    parent.Childs  =  append( parent.Childs , child )
     //fmt.Printf("\nAppend: parent: %s child %s\n",parent.Name,child.Name)
 
 }
 
-func AppendToChild ( parent *Object, existing_parent_child_name string  ,child *Object ) () {
+func AppendToChild ( parent *Object, existing_parent_child_name string  ,new_child *Object ) () {
+
   //Example:  parent: html-obj ; existing_parent_child_name: "body" ; child: div-obj
 
+  child , found := ChildDiveSearch( parent, existing_parent_child_name , "")
 
+  if found { child.Childs = append ( child.Childs, new_child ) }
 
 }
 
-func ChildDiveSearch ( parent *Object, existing_parent_child_name string )( co *Object ) {
+func ChildDiveSearch ( parent *Object, existing_parent_child_name string , param string )( child_obj *Object, found bool ) {
 
-    childs := parent.ChildsCompilationFunctions
+    childs     :=  parent.Childs
+    child_obj  =   &Object{}
 
-    for i:= range parent.ChildsCompilationFunctions {
+    //fmt.Printf("\n<< parent.Name %s \n",parent.Name)
 
-        if childs[i]().Name == existing_parent_child_name {
+    for i:= range parent.Childs {
 
+        //fmt.Printf("\n<< child.Name %s \n", childs[i].Name)
+
+        if childs[i].Name == existing_parent_child_name {
+
+            //child_obj  =  childs[i]
+            //found      =  true
+            //break
+            return childs[i], true
+
+        } else {
+
+            //fmt.Printf("\n]] child name: %s childs len: %d \n",childs[i].Name,len(childs[i].Childs))
+
+            if len(childs[i].Childs) > 0 {
+
+                temp_co, found := ChildDiveSearch ( childs[i] , existing_parent_child_name , param )
+
+                if found == true { return temp_co, true }
+
+             }
 
         }
 
     }
+
+   //fmt.Printf("\nReturning\n")
+   /*if ( child_obj == nil ) { fmt.Printf("\n child_obj is nil\n") }
+   fmt.Printf("\nchild_obj.Name: %s Found: %t\n",child_obj.Name,found)*/
+   return child_obj, false
+
 }
