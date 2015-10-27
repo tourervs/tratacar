@@ -56,10 +56,10 @@ func main() {
 
     html_code := BaseHtml()
 
-    html_code.Compile()()
+    content   := html_code.Compile()().Content
 
     //osutils.StaticFilesFinder()
 
-    fmt.Printf( "%s",html_code.Content )
+    fmt.Printf( "%s", content )
 
 }

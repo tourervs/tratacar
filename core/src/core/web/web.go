@@ -28,7 +28,7 @@ type Object struct {
     //
     Classes                               []string
     Style                                 string
-    ChildsCompilationFunctions            []func()( func () string )
+    ChildsCompilationFunctions            []func()( func () *Object )
 
 }
 
@@ -37,15 +37,15 @@ func (o *Object ) Print () {
 
 }
 
-func (o *Object ) Compile ()  ( func ()(string) ) {
+func (o *Object ) Compile ()  ( func ()(*Object) ) {
 
     var child_content string
     //fmt.Printf("\nRunning compile : %s Childs_count :%d \n", o.Name, len(o.ChildsCompilationFunctions))
 
     for chi_num := range o.ChildsCompilationFunctions {
         // Collect childs html code
-        content        :=  o.ChildsCompilationFunctions[chi_num]()
-        child_content  =   child_content+content()+"\n"
+        obj_compile        :=  o.ChildsCompilationFunctions[chi_num]()
+        child_content      =   child_content+obj_compile().Content+"\n"
         //fmt.Printf("childs content len %s",child_content)
 
     }
@@ -57,7 +57,7 @@ func (o *Object ) Compile ()  ( func ()(string) ) {
     }
     //fmt.Printf("\nchild_content |%s|\n",child_content)
 
-    return func() string {
+    return func() *Object {
 
 
         //fmt.Printf("\n returned function is started %s\n",o.Name)
@@ -80,7 +80,7 @@ func (o *Object ) Compile ()  ( func ()(string) ) {
 
             o.Content = "<" + o.Name + space + params + space +">" + new_line + o.Value + child_content + new_line + "</" + o.Name + ">"
         }
-        return o.Content
+        return o
     }
 }
 
@@ -91,3 +91,23 @@ func Append ( parent *Object, child *Object ) () {
 
 }
 
+func AppendToChild ( parent *Object, existing_parent_child_name string  ,child *Object ) () {
+  //Example:  parent: html-obj ; existing_parent_child_name: "body" ; child: div-obj
+
+
+
+}
+
+func ChildDiveSearch ( parent *Object, existing_parent_child_name string )( co *Object ) {
+
+    childs := parent.ChildsCompilationFunctions
+
+    for i:= range parent.ChildsCompilationFunctions {
+
+        if childs[i]().Name == existing_parent_child_name {
+
+
+        }
+
+    }
+}
