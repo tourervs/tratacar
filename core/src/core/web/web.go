@@ -37,7 +37,7 @@ func (o *Object ) Print () {
 
 }
 
-func (o *Object ) Compile ()  ( func ()(*Object) ) {
+func (o *Object ) Compile ()  ( func ()(*Object) ) { // need to add returning  second argument . *Object
 
     var child_content string
     //fmt.Printf("\nRunning compile : %s Childs_count :%d \n", o.Name, len(o.ChildsCompilationFunctions))
