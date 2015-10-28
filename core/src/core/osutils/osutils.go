@@ -10,7 +10,7 @@ const  STATIC_JS_DIRECTORY_NAME   =  "js"
 const  STATIC_CSS_DIRECTORY_NAME  =  "css"
 
 
-func StaticFilesFinder( static_dir string, app string )  ( static_set []string  , err error) {
+func StaticFinder( static_dir_path string, app string )  ( static_set []string  , err error) {
 
 //
 // Find "static" directory  in current directory and in parent directory.
@@ -25,31 +25,20 @@ func StaticFilesFinder( static_dir string, app string )  ( static_set []string  
 //
 
 
-    caller_dir_path              :=  filepath.Dir(filename)   // caller directory . 
-    caller_parent_dir_path       :=  filepath.Dir(caller_dir_path) // caller parent directory .for search under apps parent directory 
+    //caller_dir_path              :=  filepath.Dir(filename)   // caller directory . 
+    //caller_parent_dir_path       :=  filepath.Dir(caller_dir_path) // caller parent directory .for search under apps parent directory 
 
     // try to find static directory
 
     var dirs []string
 
-    static_dir_path               :=  caller_dir_path + "/" + STATIC_DIRECTORY_NAME
     static_dir, err               :=  os.Open( static_dir_path )
     if err == nil                 { dirs = append( dirs, static_dir_path ) }
 
 
-    parent_static_dir_path       :=  caller_parent_dir_path + "/" + STATIC_DIRECTORY_NAME
-    parent_static_dir, err       :=  os.Open( parent_static_dir_path )
-    if err == nil                { dirs = append( dirs, parent_static_dir_path )}
-
 
     defer static_dir.Close()
-    defer parent_static_dir.Close()
 
-    if len(dirs) == 0 {
-
-        return  nil, err
-
-    }
 
     // try to find js and css directories under static directories
 
