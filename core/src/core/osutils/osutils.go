@@ -1,17 +1,16 @@
 package osutils
 
 import "path/filepath"
-import "runtime"
+//import "runtime"
 import "os"
 //import "fmt"
 import "strings"
 
-const  STATIC_DIRECTORY_NAME      =  "static"
 const  STATIC_JS_DIRECTORY_NAME   =  "js"
 const  STATIC_CSS_DIRECTORY_NAME  =  "css"
 
 
-func StaticFilesFinder() ( static_set []string  , err error) {
+func StaticFilesFinder( static_dir string, app string )  ( static_set []string  , err error) {
 
 //
 // Find "static" directory  in current directory and in parent directory.
@@ -25,8 +24,6 @@ func StaticFilesFinder() ( static_set []string  , err error) {
 //
 //
 
-
-    _, filename, _, _ := runtime.Caller(1) // I don't have any fucking understanding what those underscores means
 
     caller_dir_path              :=  filepath.Dir(filename)   // caller directory . 
     caller_parent_dir_path       :=  filepath.Dir(caller_dir_path) // caller parent directory .for search under apps parent directory 
