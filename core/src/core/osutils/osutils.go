@@ -3,14 +3,15 @@ package osutils
 import "path/filepath"
 import "runtime"
 import "os"
-import "fmt"
+//import "fmt"
+import "strings"
 
 const  STATIC_DIRECTORY_NAME      =  "static"
 const  STATIC_JS_DIRECTORY_NAME   =  "js"
 const  STATIC_CSS_DIRECTORY_NAME  =  "css"
 
 
-func StaticFilesFinder() (err error) {
+func StaticFilesFinder() ( static_set []string  , err error) {
 
 //
 // Find "static" directory  in current directory and in parent directory.
@@ -24,46 +25,132 @@ func StaticFilesFinder() (err error) {
 //
 //
 
-    if err != nil {
-
-        return  err
-
-    }
 
     _, filename, _, _ := runtime.Caller(1) // I don't have any fucking understanding what those underscores means
 
     caller_dir_path              :=  filepath.Dir(filename)   // caller directory . 
     caller_parent_dir_path       :=  filepath.Dir(caller_dir_path) // caller parent directory .for search under apps parent directory 
 
-    caller_dir,         err_cd   :=  os.Open( caller_dir_path        + "/" + STATIC_DIRECTORY_NAME )
-    caller_parent_dir,  err_cpd  :=  os.Open( caller_parent_dir_path + "/" + STATIC_DIRECTORY_NAME )
+    // try to find static directory
 
-    defer caller_dir.Close()
-    defer caller_parent_dir.Close()
+    var dirs []string
 
-    if err_cd != nil && err_cpd != nil {
+    static_dir_path               :=  caller_dir_path + "/" + STATIC_DIRECTORY_NAME
+    static_dir, err               :=  os.Open( static_dir_path )
+    if err == nil                 { dirs = append( dirs, static_dir_path ) }
 
-        return  err
+
+    parent_static_dir_path       :=  caller_parent_dir_path + "/" + STATIC_DIRECTORY_NAME
+    parent_static_dir, err       :=  os.Open( parent_static_dir_path )
+    if err == nil                { dirs = append( dirs, parent_static_dir_path )}
+
+
+    defer static_dir.Close()
+    defer parent_static_dir.Close()
+
+    if len(dirs) == 0 {
+
+        return  nil, err
 
     }
 
-    fmt.Printf("\n|filename_directory: %s|\n", filepath.Dir(filename))
+    // try to find js and css directories under static directories
 
-    defer runtime_dir.Close()
 
-    dir_content , err := runtime_dir.Readdirnames(-1)
+    for i:= range dirs {
 
-    for i:= range dir_content {
+        // collect js-files
 
-        fmt.Printf("\n| %s |\n",dir_content[i])
+        dir_js, err := os.Open(dirs[i] + "/" + STATIC_JS_DIRECTORY_NAME)
+
+        defer dir_js.Close()
+
+        if err == nil {
+
+            dir_content , err := dir_js.Readdirnames(-1)
+
+            if err == nil {
+
+                for i:= range dir_content {
+
+                    js_file_name := dir_content[i]
+
+                    if strings.HasSuffix( js_file_name , ".js" ) {
+
+                        if IsRegular(js_file_name) {
+                            static_set = append ( static_set , dirs[i] + "/" + STATIC_JS_DIRECTORY_NAME + "/" +js_file_name )
+                        }
+
+
+                    }
+                }
+            }
+
+        }
+        // collect css-files 
+
+        dir_css, err := os.Open(dirs[i] + "/" + STATIC_CSS_DIRECTORY_NAME)
+
+        defer dir_css.Close()
+
+        if err  == nil {
+
+            dir_content , err := dir_css.Readdirnames(-1)
+
+            if err == nil {
+
+                for i:= range dir_content {
+
+                    css_file_name := dir_content[i]
+
+                    if strings.HasSuffix( css_file_name , ".js" ) {
+
+                        if IsRegular(css_file_name) {
+                            static_set = append ( static_set , dirs[i] + "/" + STATIC_CSS_DIRECTORY_NAME + "/" + css_file_name )
+                        }
+
+
+                    }
+                }
+            }
+
+        }
+
 
     }
+    //
+
+    return static_set,nil
+}
+
+
+func IsRegular (path string) (is_regular bool) {
+
+    file, err := os.Open(path)
+
+    //fmt.Println(path)
+
+    defer file.Close()
+    if err != nil {
+
+        return false
+
+    }
+
+    file_info , err := file.Stat()
 
     if err != nil {
-        return  err
+
+        return false
+
     }
 
+    file_mode :=  file_info.Mode()
+    if file_mode.IsRegular() {
 
-    return nil
+        is_regular = true
+
+    }
+    return
 }
 
